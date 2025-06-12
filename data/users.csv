@@ -1,0 +1,8 @@
+id,firstName,lastName,dateOfBirth,handicap,matricule,function
+U1,Alice,Young,2005-06-15,false,,
+U2,Cara,Solid,1990-03-10,true,,
+E3,redouan,benssassi,2005-06-22,false,E8,DRIVER
+U4,Alice,Old,1950-11-11,false,,
+U5,Mohamedd Ali,Semmar,1998-11-11,false,,
+U6,Dhiaa,Aissaoui,2025-05-21,false,,
+E7,test emp,aaaaa,1950-11-11,true,E5,AGENT

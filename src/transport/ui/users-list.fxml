@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.UsersListController"
+            prefHeight="800.0" prefWidth="1200.0"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@styles/main.css" />
+    </stylesheets>
+
+    <left>
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+                <Label text="ESI-" styleClass="sidebar-title" />
+                <Label text="RUN" styleClass="sidebar-title-accent" />
+                <Label text="Console" styleClass="sidebar-title" />
+            </HBox>
+
+            <VBox styleClass="sidebar-menu" spacing="5">
+                <Button fx:id="dashboardBtn" text="Dashboard" styleClass="menu-item" onAction="#navigateToDashboard">
+                    <graphic>
+                        <Region styleClass="icon-dashboard" />
+                    </graphic>
+                </Button>
+                <Button fx:id="usersBtn" text="User Management" styleClass="menu-item, active" onAction="#navigateToUsers">
+                    <graphic>
+                        <Region styleClass="icon-users" />
+                    </graphic>
+                </Button>
+                <Button fx:id="passesBtn" text="Transport Passes" styleClass="menu-item" onAction="#navigateToPasses">
+                    <graphic>
+                        <Region styleClass="icon-passes" />
+                    </graphic>
+                </Button>
+                <Button fx:id="reclamationsBtn" text="Complaints" styleClass="menu-item" onAction="#navigateToComplaints">
+                    <graphic>
+                        <Region styleClass="icon-reclamations" />
+                    </graphic>
+                </Button>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="menu-item" onAction="#logout">
+                    <graphic>
+                        <Region styleClass="icon-logout" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Main content area -->
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+
+                <!-- Header -->
+                <HBox styleClass="header" alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="User Management" styleClass="page-title" />
+                    </VBox>
+
+                    <HBox styleClass="user-info" alignment="CENTER" spacing="10">
+                        <Region styleClass="user-avatar" />
+                        <VBox>
+                            <Label text="Mohamed ali semmar" styleClass="user-name" />
+                            <Label text="System Administrator" styleClass="user-role" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- Action Bar -->
+                <HBox styleClass="action-bar" alignment="CENTER_LEFT" spacing="15">
+                    <HBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="10">
+                        <TextField fx:id="searchField" promptText="Search users..." styleClass="search-field" onKeyReleased="#handleSearch" />
+                        <ComboBox fx:id="userTypeCombo" promptText="All Types" styleClass="filter-combo" onAction="#handleFilterChange">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="All Types" />
+                                    <String fx:value="Users" />
+                                    <String fx:value="Employees" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </HBox>
+
+                    <Button text="Add New User" styleClass="btn, btn-primary" onAction="#navigateToAddUser">
+                        <graphic>
+                            <Region styleClass="icon, icon-add-user" />
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <!-- Users Table -->
+                <VBox styleClass="table-container">
+                    <TableView fx:id="usersTable" styleClass="data-table">
+                        <columns>
+                            <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="150" />
+                            <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="150" />
+                            <TableColumn fx:id="dobColumn" text="Date of Birth" prefWidth="120" />
+                            <TableColumn fx:id="typeColumn" text="Type" prefWidth="100" />
+                            <TableColumn fx:id="handicapColumn" text="Handicap" prefWidth="100" />
+                            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="300" />
+                        </columns>
+                    </TableView>
+
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

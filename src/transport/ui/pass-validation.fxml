@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.PassValidationController"
+            prefHeight="800.0" prefWidth="1200.0"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@styles/main.css" />
+    </stylesheets>
+
+    <left>
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+                <Label text="ESI-" styleClass="sidebar-title" />
+                <Label text="RUN" styleClass="sidebar-title-accent" />
+                <Label text="Console" styleClass="sidebar-title" />
+            </HBox>
+
+            <VBox styleClass="sidebar-menu" spacing="5">
+                <Button fx:id="dashboardBtn" text="Dashboard" styleClass="menu-item" onAction="#navigateToDashboard">
+                    <graphic>
+                        <Region styleClass="icon-dashboard" />
+                    </graphic>
+                </Button>
+                <Button fx:id="usersBtn" text="User Management" styleClass="menu-item" onAction="#navigateToUsers">
+                    <graphic>
+                        <Region styleClass="icon-users" />
+                    </graphic>
+                </Button>
+                <Button fx:id="passesBtn" text="Transport Passes" styleClass="menu-item, active" onAction="#navigateToPasses">
+                    <graphic>
+                        <Region styleClass="icon-passes" />
+                    </graphic>
+                </Button>
+                <Button fx:id="reclamationsBtn" text="Complaints" styleClass="menu-item" onAction="#navigateToComplaints">
+                    <graphic>
+                        <Region styleClass="icon-reclamations" />
+                    </graphic>
+                </Button>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="menu-item" onAction="#logout">
+                    <graphic>
+                        <Region styleClass="icon-logout" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Main content area -->
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+
+                <!-- Header -->
+                <HBox styleClass="header" alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Validate Pass" styleClass="page-title" />
+                    </VBox>
+
+                    <HBox styleClass="user-info" alignment="CENTER" spacing="10">
+                        <Region styleClass="user-avatar" />
+                        <VBox>
+                            <Label text="Mohamed ali semmar" styleClass="user-name" />
+                            <Label text="System Administrator" styleClass="user-role" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- Validation Form -->
+                <VBox fx:id="validationForm" styleClass="validation-container" alignment="CENTER">
+                    <padding>
+                        <Insets top="40" right="40" bottom="40" left="40" />
+                    </padding>
+
+                    <Region styleClass="validation-icon" />
+                    <Label text="Pass Validation" styleClass="validation-title" />
+                    <Label text="Enter the pass ID to validate" styleClass="validation-description" />
+
+                    <VBox styleClass="validation-form">
+                        <TextField fx:id="passIdField" promptText="Enter Pass ID" styleClass="validation-input" />
+                        <Button text="Validate Pass" styleClass="validation-button" onAction="#handleValidatePass" />
+                    </VBox>
+                </VBox>
+
+                <!-- Success Result (Hidden by default) -->
+                <VBox fx:id="successResult" styleClass="validation-result, result-success" alignment="CENTER_LEFT" managed="false" visible="false">
+                    <HBox alignment="CENTER_LEFT" styleClass="result-title">
+                        <Region styleClass="icon-check" />
+                        <Label text="Valid Pass" />
+                    </HBox>
+
+                    <VBox styleClass="result-details">
+                        <HBox styleClass="result-detail">
+                            <Label text="Pass ID: " styleClass="result-detail-label" />
+                            <Label fx:id="validPassIdLabel" text="PASS-1001" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Type: " styleClass="result-detail-label" />
+                            <Label fx:id="validPassTypeLabel" text="Personal Card" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Owner: " styleClass="result-detail-label" />
+                            <Label fx:id="validUserNameLabel" text="Sarah Johnson" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Issue Date: " styleClass="result-detail-label" />
+                            <Label fx:id="validIssueDateLabel" text="May 01, 2023" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Expiry Date: " styleClass="result-detail-label" />
+                            <Label fx:id="validExpiryDateLabel" text="May 01, 2024" />
+                        </HBox>
+                    </VBox>
+
+                    <HBox styleClass="result-actions">
+                        <Button text="Validate Another Pass" styleClass="result-button" onAction="#resetValidation" />
+                    </HBox>
+                </VBox>
+
+                <!-- Error Result (Hidden by default) -->
+                <VBox fx:id="errorResult" styleClass="validation-result, result-error" alignment="CENTER_LEFT" managed="false" visible="false">
+                    <HBox alignment="CENTER_LEFT" styleClass="result-title">
+                        <Region styleClass="icon-error" />
+                        <Label text="Invalid Pass" />
+                    </HBox>
+
+                    <Label fx:id="errorMessageLabel" text="This pass is expired and cannot be used for transport." wrapText="true" />
+
+                    <VBox styleClass="result-details">
+                        <HBox styleClass="result-detail">
+                            <Label text="Pass ID: " styleClass="result-detail-label" />
+                            <Label fx:id="invalidPassIdLabel" text="PASS-1003" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Type: " styleClass="result-detail-label" />
+                            <Label fx:id="invalidPassTypeLabel" text="Ticket" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Owner: " styleClass="result-detail-label" />
+                            <Label fx:id="invalidUserNameLabel" text="Emily Davis" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Issue Date: " styleClass="result-detail-label" />
+                            <Label fx:id="invalidIssueDateLabel" text="Apr 20, 2023" />
+                        </HBox>
+                        <HBox styleClass="result-detail">
+                            <Label text="Expiry Date: " styleClass="result-detail-label" />
+                            <Label fx:id="invalidExpiryDateLabel" text="Apr 20, 2023" />
+                        </HBox>
+                    </VBox>
+
+                    <HBox styleClass="result-actions">
+                        <Button text="Validate Another Pass" styleClass="result-button" onAction="#resetValidation" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

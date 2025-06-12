@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.UserAddController"
+            prefHeight="800.0" prefWidth="1200.0"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@styles/main.css" />
+    </stylesheets>
+
+    <left>
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+                <Label text="ESI-" styleClass="sidebar-title" />
+                <Label text="RUN" styleClass="sidebar-title-accent" />
+                <Label text="Console" styleClass="sidebar-title" />
+            </HBox>
+
+            <VBox styleClass="sidebar-menu" spacing="5">
+                <Button fx:id="dashboardBtn" text="Dashboard" styleClass="menu-item" onAction="#navigateToDashboard">
+                    <graphic>
+                        <Region styleClass="icon-dashboard" />
+                    </graphic>
+                </Button>
+                <Button fx:id="usersBtn" text="User Management" styleClass="menu-item, active" onAction="#navigateToUsers">
+                    <graphic>
+                        <Region styleClass="icon-users" />
+                    </graphic>
+                </Button>
+                <Button fx:id="passesBtn" text="Transport Passes" styleClass="menu-item" onAction="#navigateToPasses">
+                    <graphic>
+                        <Region styleClass="icon-passes" />
+                    </graphic>
+                </Button>
+                <Button fx:id="reclamationsBtn" text="Complaints" styleClass="menu-item" onAction="#navigateToComplaints">
+                    <graphic>
+                        <Region styleClass="icon-reclamations" />
+                    </graphic>
+                </Button>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="menu-item" onAction="#logout">
+                    <graphic>
+                        <Region styleClass="icon-logout" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Main content area -->
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+
+                <!-- Header -->
+                <HBox styleClass="header" alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Add New User" styleClass="page-title" />
+                    </VBox>
+
+                    <HBox styleClass="user-info" alignment="CENTER" spacing="10">
+                        <Region styleClass="user-avatar" />
+                        <VBox>
+                            <Label text="Mohamed ali semmar" styleClass="user-name" />
+                            <Label text="System Administrator" styleClass="user-role" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- Success Message (Hidden by default) -->
+                <HBox fx:id="successMessage" styleClass="alert, alert-success" managed="false" visible="false">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15" />
+                    </padding>
+                    <Label text="User has been successfully added." />
+                </HBox>
+
+                <!-- Form Container -->
+                <VBox styleClass="form-container">
+                    <padding>
+                        <Insets top="30" right="30" bottom="30" left="30" />
+                    </padding>
+
+                    <Label text="User Information" styleClass="form-title" />
+
+                    <VBox spacing="25">
+                        <!-- User Type Selection -->
+                        <VBox styleClass="form-section">
+                            <Label text="User Type" styleClass="form-section-title" />
+
+                            <HBox spacing="20">
+                                <RadioButton fx:id="regularUserRadio" text="Regular User" selected="true">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="userTypeGroup" />
+                                    </toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="employeeRadio" text="Employee" toggleGroup="$userTypeGroup" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Basic Information -->
+                        <VBox styleClass="form-section">
+                            <Label text="Basic Information" styleClass="form-section-title" />
+
+                            <GridPane styleClass="form-grid" hgap="20" vgap="15">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50" />
+                                    <ColumnConstraints percentWidth="50" />
+                                </columnConstraints>
+
+                                <!-- First Name -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="First Name *" styleClass="form-label" />
+                                    <TextField fx:id="firstNameField" promptText="Enter first name" styleClass="form-control" />
+                                </VBox>
+
+                                <!-- Last Name -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Last Name *" styleClass="form-label" />
+                                    <TextField fx:id="lastNameField" promptText="Enter last name" styleClass="form-control" />
+                                </VBox>
+
+                                <!-- Date of Birth -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <Label text="Date of Birth *" styleClass="form-label" />
+                                    <DatePicker fx:id="dobPicker" promptText="Select date" styleClass="form-control" />
+                                </VBox>
+
+                                <!-- Handicap -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label text="Handicap Status" styleClass="form-label" />
+                                    <CheckBox fx:id="handicapCheckbox" text="Person has a handicap" />
+                                </VBox>
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Employee Information (Hidden by default) -->
+                        <VBox fx:id="employeeSection" styleClass="form-section" managed="false" visible="false">
+                            <Label text="Employee Information" styleClass="form-section-title" />
+
+                            <GridPane styleClass="form-grid" hgap="20" vgap="15">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50" />
+                                    <ColumnConstraints percentWidth="50" />
+                                </columnConstraints>
+
+                                <!-- Matricule -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Matricule *" styleClass="form-label" />
+                                    <TextField fx:id="matriculeField" promptText="Enter employee ID" styleClass="form-control" />
+                                </VBox>
+
+                                <!-- Function -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Function *" styleClass="form-label" />
+                                    <ComboBox fx:id="functionCombo" promptText="Select function" styleClass="form-control">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="DRIVER" />
+                                                <String fx:value="CONTROLLER" />
+                                                <String fx:value="STATION_AGENT" />
+                                                <String fx:value="ADMIN" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+                                </VBox>
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Form Actions -->
+                        <HBox styleClass="form-actions" alignment="CENTER_RIGHT" spacing="15">
+                            <Button text="Cancel" styleClass="btn, btn-secondary" onAction="#handleCancel" />
+                            <Button text="Save User" styleClass="btn, btn-primary" onAction="#handleSaveUser" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

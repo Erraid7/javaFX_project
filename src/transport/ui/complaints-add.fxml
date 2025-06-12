@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.ComplaintAddController"
+            prefHeight="800.0" prefWidth="1200.0"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@styles/main.css" />
+    </stylesheets>
+
+    <left>
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+                <Label text="ESI-" styleClass="sidebar-title" />
+                <Label text="RUN" styleClass="sidebar-title-accent" />
+                <Label text="Console" styleClass="sidebar-title" />
+            </HBox>
+
+            <VBox styleClass="sidebar-menu" spacing="5">
+                <Button fx:id="dashboardBtn" text="Dashboard" styleClass="menu-item" onAction="#navigateToDashboard">
+                    <graphic>
+                        <Region styleClass="icon-dashboard" />
+                    </graphic>
+                </Button>
+                <Button fx:id="usersBtn" text="User Management" styleClass="menu-item" onAction="#navigateToUsers">
+                    <graphic>
+                        <Region styleClass="icon-users" />
+                    </graphic>
+                </Button>
+                <Button fx:id="passesBtn" text="Transport Passes" styleClass="menu-item" onAction="#navigateToPasses">
+                    <graphic>
+                        <Region styleClass="icon-passes" />
+                    </graphic>
+                </Button>
+                <Button fx:id="reclamationsBtn" text="Complaints" styleClass="menu-item, active" onAction="#navigateToComplaints">
+                    <graphic>
+                        <Region styleClass="icon-reclamations" />
+                    </graphic>
+                </Button>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="menu-item" onAction="#logout">
+                    <graphic>
+                        <Region styleClass="icon-logout" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Main content area -->
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+
+                <!-- Header -->
+                <HBox styleClass="header" alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Submit Complaint" styleClass="page-title" />
+                    </VBox>
+
+                    <HBox styleClass="user-info" alignment="CENTER" spacing="10">
+                        <Region styleClass="user-avatar" />
+                        <VBox>
+                            <Label text="Mohamed ali semmar" styleClass="user-name" />
+                            <Label text="System Administrator" styleClass="user-role" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- Success Message (Hidden by default) -->
+                <HBox fx:id="successMessage" styleClass="alert, alert-success" managed="false" visible="false">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15" />
+                    </padding>
+                    <Label text="Complaint has been successfully submitted." />
+                </HBox>
+
+                <!-- Form Container -->
+                <VBox styleClass="form-container">
+                    <padding>
+                        <Insets top="30" right="30" bottom="30" left="30" />
+                    </padding>
+
+                    <Label text="Complaint Information" styleClass="form-title" />
+
+                    <VBox spacing="25">
+                        <!-- Reporter Information -->
+                        <VBox styleClass="form-section">
+                            <Label text="Reporter Information" styleClass="form-section-title" />
+
+                            <VBox styleClass="form-group" spacing="10">
+                                <Label text="Search Reporter *" styleClass="form-label" />
+                                <HBox spacing="10">
+                                    <TextField fx:id="reporterSearchField" promptText="Enter name or email to search" styleClass="form-control" HBox.hgrow="ALWAYS" onKeyReleased="#handleReporterSearch" />
+                                </HBox>
+                                <Label text="Search for an existing user" styleClass="form-hint" />
+
+                                <!-- Search Results (Hidden by default) -->
+                                <ListView fx:id="searchResultsList" styleClass="search-results" prefHeight="200" managed="false" visible="false" onMouseClicked="#handleReporterSelection" />
+
+                                <!-- Selected Reporter Card (Hidden by default) -->
+                                <HBox fx:id="selectedReporterCard" styleClass="user-card" spacing="15" alignment="CENTER_LEFT" managed="false" visible="false">
+                                    <StackPane styleClass="user-avatar-container">
+                                        <Region styleClass="user-avatar" />
+                                        <Label fx:id="reporterInitialsLabel" styleClass="user-initials" text="SJ" />
+                                    </StackPane>
+                                    <VBox spacing="5">
+                                        <Label fx:id="selectedReporterNameLabel" styleClass="user-card-name" text="Sarah Johnson" />
+                                        <Label fx:id="selectedReporterEmailLabel" styleClass="user-card-detail" text="sarah.j@example.com" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Target Information -->
+                        <VBox styleClass="form-section">
+                            <Label text="Target Information" styleClass="form-section-title" />
+
+                            <GridPane styleClass="form-grid" hgap="20" vgap="15">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50" />
+                                    <ColumnConstraints percentWidth="50" />
+                                </columnConstraints>
+
+                                <!-- Target Type -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Target Type *" styleClass="form-label" />
+                                    <ComboBox fx:id="targetTypeCombo" promptText="Select target type" styleClass="form-control" onAction="#handleTargetTypeChange">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="Station" />
+                                                <String fx:value="Vehicle" />
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
+                                </VBox>
+
+                                <!-- Target -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Target *" styleClass="form-label" />
+                                    <ComboBox fx:id="targetCombo" promptText="Select target" styleClass="form-control" />
+                                </VBox>
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Complaint Details -->
+                        <VBox styleClass="form-section">
+                            <Label text="Complaint Details" styleClass="form-section-title" />
+
+                            <GridPane styleClass="form-grid" hgap="20" vgap="15">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50" />
+                                    <ColumnConstraints percentWidth="50" />
+                                </columnConstraints>
+
+                                <!-- Complaint Type -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Complaint Type *" styleClass="form-label" />
+                                    <ComboBox fx:id="complaintTypeCombo" promptText="Select complaint type" styleClass="form-control" />
+                                </VBox>
+
+                                <!-- Gravity Level -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Gravity Level *" styleClass="form-label" />
+                                    <ComboBox fx:id="gravityLevelCombo" promptText="Select gravity level" styleClass="form-control" />
+                                </VBox>
+
+                                <!-- Description -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                                    <Label text="Description *" styleClass="form-label" />
+                                    <TextArea fx:id="descriptionArea" promptText="Enter detailed description of the complaint" styleClass="form-control" prefHeight="150" wrapText="true" />
+                                </VBox>
+
+                                <!-- Supporting Document -->
+                                <VBox styleClass="form-group" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+                                    <Label text="Supporting Document (Optional)" styleClass="form-label" />
+                                    <HBox spacing="10">
+                                        <TextField fx:id="documentPathField" promptText="No file selected" styleClass="form-control" HBox.hgrow="ALWAYS" editable="false" />
+                                        <Button text="Browse" styleClass="btn, btn-secondary" onAction="#handleBrowseDocument" />
+                                    </HBox>
+                                </VBox>
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Form Actions -->
+                        <HBox styleClass="form-actions" alignment="CENTER_RIGHT" spacing="15">
+                            <Button text="Cancel" styleClass="btn, btn-secondary" onAction="#handleCancel" />
+                            <Button text="Submit Complaint" styleClass="btn, btn-primary" onAction="#handleSubmitComplaint" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>
