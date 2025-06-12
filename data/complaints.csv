@@ -1,0 +1,6 @@
+id,date,reporterFullName,type,targetType,targetId,description,gravity
+4,2025-05-19,Cara Solid,TECHNICAL,VEHICLE,TRAM2,"tset",HIGH
+5,2025-05-19,Alice Young,TECHNICAL,VEHICLE,TRAM2,"test before suspenssion",HIGH
+7,2025-05-19,redouan benssassi,PAYMENT,STATION,Central,"zedr",MEDIUM
+9,2025-05-20,mohamed erraid Djemai,PAYMENT,STATION,Central,"aaaaaaa",LOW
+10,2025-05-20,mohamed erraid Djemai,PAYMENT,STATION,Central,"bohbsfeb",HIGH

@@ -1,0 +1,9 @@
+id,type,purchaseDate,price,paymentMethod,ownerFullName,cardType,isEmployee
+3,PERS_CARD,2023-05-20,3500.0,CASH,Alice Young,JUNIOR,false
+4,PERS_CARD,2025-05-20,2500.0,CASH,Cara Solid,SOLIDARITY,false
+5,PERS_CARD,2025-05-20,3000.0,DAHABIA,redouan benssassi,PARTNER,true
+6,PERS_CARD,2025-05-20,3750.0,BARIDIMOB,Alice Old,SENIOR,false
+7,TICKET,2025-05-20,50.0,DAHABIA,Cara Solid,,,
+8,PERS_CARD,2025-05-20,3500.0,CASH,Alice Young,JUNIOR,false
+9,PERS_CARD,2025-05-20,3750.0,BARIDIMOB,Alice Old,SENIOR,false
+10,PERS_CARD,2025-06-02,3000.0,DAHABIA,redouan benssassi,PARTNER,true

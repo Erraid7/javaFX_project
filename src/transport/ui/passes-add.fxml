@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.PassAddController"
+            prefHeight="800.0" prefWidth="1200.0"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@styles/main.css" />
+    </stylesheets>
+
+    <left>
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+                <Label text="ESI-" styleClass="sidebar-title" />
+                <Label text="RUN" styleClass="sidebar-title-accent" />
+                <Label text="Console" styleClass="sidebar-title" />
+            </HBox>
+
+            <VBox styleClass="sidebar-menu" spacing="5">
+                <Button fx:id="dashboardBtn" text="Dashboard" styleClass="menu-item" onAction="#navigateToDashboard">
+                    <graphic>
+                        <Region styleClass="icon-dashboard" />
+                    </graphic>
+                </Button>
+                <Button fx:id="usersBtn" text="User Management" styleClass="menu-item" onAction="#navigateToUsers">
+                    <graphic>
+                        <Region styleClass="icon-users" />
+                    </graphic>
+                </Button>
+                <Button fx:id="passesBtn" text="Transport Passes" styleClass="menu-item, active" onAction="#navigateToPasses">
+                    <graphic>
+                        <Region styleClass="icon-passes" />
+                    </graphic>
+                </Button>
+                <Button fx:id="reclamationsBtn" text="Complaints" styleClass="menu-item" onAction="#navigateToComplaints">
+                    <graphic>
+                        <Region styleClass="icon-reclamations" />
+                    </graphic>
+                </Button>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="menu-item" onAction="#logout">
+                    <graphic>
+                        <Region styleClass="icon-logout" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Main content area -->
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+
+                <!-- Header -->
+                <HBox styleClass="header" alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Issue New Pass" styleClass="page-title" />
+                    </VBox>
+
+                    <HBox styleClass="user-info" alignment="CENTER" spacing="10">
+                        <Region styleClass="user-avatar" />
+                        <VBox>
+                            <Label text="Mohamed ali semmar" styleClass="user-name" />
+                            <Label text="System Administrator" styleClass="user-role" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- Success Message (Hidden by default) -->
+                <HBox fx:id="successMessage" styleClass="alert, alert-success" managed="false" visible="false">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15" />
+                    </padding>
+                    <Label text="Pass has been successfully issued." />
+                </HBox>
+
+                <!-- Form Container -->
+                <VBox styleClass="form-container">
+                    <padding>
+                        <Insets top="30" right="30" bottom="30" left="30" />
+                    </padding>
+
+                    <Label text="Pass Information" styleClass="form-title" />
+
+                    <VBox spacing="25">
+                        <!-- Pass Type Selection -->
+                        <VBox styleClass="form-section">
+                            <Label text="Pass Type" styleClass="form-section-title" />
+
+                            <HBox spacing="20">
+                                <RadioButton fx:id="ticketRadio" text="Single-Use Ticket (50 DA)" selected="true">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="passTypeGroup" />
+                                    </toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="personalCardRadio" text="Personal Card (5000 DA base price)" toggleGroup="$passTypeGroup" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card Owner (Always visible) -->
+                        <VBox fx:id="ownerSection" styleClass="form-section">
+                            <Label text="Pass Owner" styleClass="form-section-title" />
+
+                            <VBox styleClass="form-group" spacing="10">
+                                <Label text="Search User *" styleClass="form-label" />
+                                <HBox spacing="10">
+                                    <TextField fx:id="userSearchField" promptText="Enter name to search" styleClass="form-control" HBox.hgrow="ALWAYS" onKeyReleased="#handleUserSearch" />
+                                </HBox>
+                                <Label text="Search for an existing user" styleClass="form-hint" />
+
+                                <!-- Search Results (Hidden by default) -->
+                                <ListView fx:id="searchResultsList" styleClass="search-results" prefHeight="200" managed="false" visible="false" onMouseClicked="#handleUserSelection" />
+
+                                <!-- Selected User Card (Hidden by default) -->
+                                <HBox fx:id="selectedUserCard" styleClass="user-card" spacing="15" alignment="CENTER_LEFT" managed="false" visible="false">
+                                    <StackPane styleClass="user-avatar-container">
+                                        <Region styleClass="user-avatar" />
+                                        <Label fx:id="userInitialsLabel" styleClass="user-initials" text="SJ" />
+                                    </StackPane>
+                                    <VBox spacing="5">
+                                        <Label fx:id="selectedUserNameLabel" styleClass="user-card-name" text="Sarah Johnson" />
+                                        <HBox spacing="10">
+                                            <Label fx:id="selectedUserTypeLabel" styleClass="user-card-category" text="Regular User" />
+                                            <Label fx:id="selectedUserDobLabel" styleClass="user-card-detail" text="DOB: 1990-01-01" />
+                                        </HBox>
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Payment Information -->
+                        <VBox styleClass="form-section">
+                            <Label text="Payment Information" styleClass="form-section-title" />
+
+                            <VBox styleClass="form-group" spacing="10">
+                                <Label text="Payment Method *" styleClass="form-label" />
+                                <ComboBox fx:id="paymentMethodCombo" promptText="Select payment method" styleClass="form-control">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="CASH" />
+                                            <String fx:value="CREDIT_CARD" />
+                                            <String fx:value="DEBIT_CARD" />
+                                            <String fx:value="MOBILE_PAYMENT" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Price Summary -->
+                        <VBox styleClass="price-summary">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20" />
+                            </padding>
+
+                            <Label text="Price Summary" styleClass="summary-title" />
+
+                            <GridPane styleClass="price-grid" hgap="20" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="70" />
+                                    <ColumnConstraints percentWidth="30" />
+                                </columnConstraints>
+
+                                <Label text="Base Price:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Label fx:id="basePriceLabel" text="50.00 DA" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                <Label text="Discount:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <Label fx:id="discountLabel" text="0.00 DA" styleClass="discount" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                <Separator GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2" />
+
+                                <Label text="Total Price:" styleClass="total-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                <Label fx:id="totalPriceLabel" text="50.00 DA" styleClass="total-price" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Form Actions -->
+                        <HBox styleClass="form-actions" alignment="CENTER_RIGHT" spacing="15">
+                            <Button text="Cancel" styleClass="btn, btn-secondary" onAction="#handleCancel" />
+                            <Button text="Issue Pass" styleClass="btn, btn-primary" onAction="#handleIssuePass" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

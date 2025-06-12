@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="transport.control.DashboardController"
+            prefHeight="800.0" prefWidth="1200.0"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@styles/main.css" />
+    </stylesheets>
+
+    <left>
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+                <Label text="ESI-" styleClass="sidebar-title" />
+                <Label text="RUN" styleClass="sidebar-title-accent" />
+                <Label text="Console" styleClass="sidebar-title" />
+            </HBox>
+
+            <VBox styleClass="sidebar-menu" spacing="5">
+                <Button fx:id="dashboardBtn" text="Dashboard" styleClass="menu-item, active" onAction="#navigateToDashboard">
+                    <graphic>
+                        <Region styleClass="icon-dashboard" />
+                    </graphic>
+                </Button>
+                <Button fx:id="usersBtn" text="User Management" styleClass="menu-item" onAction="#navigateToUsers">
+                    <graphic>
+                        <Region styleClass="add-user" />
+                    </graphic>
+                </Button>
+                <Button fx:id="passesBtn" text="Transport Passes" styleClass="menu-item" onAction="#navigateToPasses">
+                    <graphic>
+                        <Region styleClass="icon-passes" />
+                    </graphic>
+                </Button>
+                <Button fx:id="reclamationsBtn" text="Complaints" styleClass="menu-item" onAction="#navigateToComplaints">
+                    <graphic>
+                        <Region styleClass="icon-complaints" />
+                    </graphic>
+                </Button>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="menu-item" onAction="#logout">
+                    <graphic>
+                        <Region styleClass="icon-logout" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Main content area -->
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20" />
+                </padding>
+
+                <!-- Header -->
+                <HBox styleClass="header" alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Dashboard" styleClass="page-title" />
+                    </VBox>
+
+                    <HBox styleClass="user-info" alignment="CENTER" spacing="10">
+                        <Region styleClass="user-avatar" />
+                        <VBox>
+                            <Label text="Mohamed ali semmar" styleClass="user-name" />
+                            <Label text="System Administrator" styleClass="user-role" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- Dashboard Content -->
+                <HBox spacing="20" alignment="CENTER" styleClass="dashboard-stats">
+                    <!-- Users Stat Card -->
+                    <VBox styleClass="stat-card">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Region styleClass="stat-icon, icon-users" />
+                            <VBox>
+                                <Label text="Total Users" styleClass="stat-title" />
+                                <Label fx:id="userCountLabel" text="0" styleClass="stat-value" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Passes Stat Card -->
+                    <VBox styleClass="stat-card">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Region styleClass="stat-icon, icon-passes" />
+                            <VBox>
+                                <Label text="Active Passes" styleClass="stat-title" />
+                                <Label fx:id="passCountLabel" text="0" styleClass="stat-value" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Complaints Stat Card -->
+                    <VBox styleClass="stat-card">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Region styleClass="stat-icon, icon-complaints" />
+                            <VBox>
+                                <Label text="Open Complaints" styleClass="stat-title" />
+                                <Label fx:id="complaintCountLabel" text="0" styleClass="stat-value" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Vehicles Stat Card -->
+                    <VBox styleClass="stat-card">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Region styleClass="stat-icon, icon-vehicles" />
+                            <VBox>
+                                <Label text="Active Vehicles" styleClass="stat-title" />
+                                <Label fx:id="vehicleCountLabel" text="0" styleClass="stat-value" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Quick Actions -->
+                <HBox spacing="20" styleClass="dashboard-actions">
+                    <VBox styleClass="action-card" HBox.hgrow="ALWAYS">
+                        <Label text="User Management" styleClass="action-title" />
+                        <HBox spacing="10" styleClass="action-buttons">
+                            <Button text="Add User" styleClass="btn, btn-primary" onAction="#navigateToAddUser" />
+                            <Button text="View All Users" styleClass="btn, btn-secondary" onAction="#navigateToUsers" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="action-card" HBox.hgrow="ALWAYS">
+                        <Label text="Pass Management" styleClass="action-title" />
+                        <HBox spacing="10" styleClass="action-buttons">
+                            <Button text="Issue Pass" styleClass="btn, btn-primary" onAction="#navigateToAddPass" />
+                            <Button text="Validate Pass" styleClass="btn, btn-secondary" onAction="#navigateToValidatePass" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="action-card" HBox.hgrow="ALWAYS">
+                        <Label text="Complaint Management" styleClass="action-title" />
+                        <HBox spacing="10" styleClass="action-buttons">
+                            <Button text="Submit Complaint" styleClass="btn, btn-primary" onAction="#navigateToAddComplaint" />
+                            <Button text="View All Complaints" styleClass="btn, btn-secondary" onAction="#navigateToComplaints" />
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>
